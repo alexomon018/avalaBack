@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String     @id @default(uuid())
+  email       String     @unique
+  firstName   String
+  lastName    String
+  notice      String
+  phoneNumber String
+  password    String
+  photoUrl    String
+  school      String
+  status      String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  photo       Photo[]
+  jobLikes    JobLikes[]
+}
+
+model JobLikes {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  jobId  String
+  job    Jobs   @relation(fields: [jobId], references: [id])
+}
+
+model Photo {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  url       String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Blog {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  slug      String   @unique
+  tags      String[]
+}
+
+model Jobs {
+  id          String     @id @default(uuid())
+  title       String
+  subtitle    String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  slug        String     @unique
+  location    String
+  description String
+  pictureUrl  String
+  condition   String
+  workHours   String
+  wage        String
+  JobLikes    JobLikes[]
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  subject   String
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

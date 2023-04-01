@@ -10,20 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum STUDENT_STATUS {
+  STUDENT
+  UCENIK
+  NEZAPOSLEN
+}
+
 model User {
-  id          String     @id @default(uuid())
-  email       String     @unique
+  id          String         @id @default(uuid())
+  email       String         @unique
   firstName   String
   lastName    String
-  notice      String
+  notice      String?
   phoneNumber String
   password    String
-  photoUrl    String
+  photoUrl    String?
   school      String
-  status      String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  photo       Photo[]
+  status      STUDENT_STATUS
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  photos      Photo[]
   jobLikes    JobLikes[]
 }
 
@@ -33,6 +39,8 @@ model JobLikes {
   user   User   @relation(fields: [userId], references: [id])
   jobId  String
   job    Jobs   @relation(fields: [jobId], references: [id])
+
+  @@index([userId, jobId], name: "hearts")
 }
 
 model Photo {
@@ -62,12 +70,12 @@ model Jobs {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   slug        String     @unique
-  location    String
-  description String
-  pictureUrl  String
-  condition   String
-  workHours   String
-  wage        String
+  location    String?
+  description String?
+  pictureUrl  String?
+  condition   String?
+  workHours   String?
+  wage        String?
   JobLikes    JobLikes[]
 }
 

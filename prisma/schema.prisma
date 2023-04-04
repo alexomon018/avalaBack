@@ -17,18 +17,18 @@ enum STUDENT_STATUS {
 }
 
 model User {
-  id          String         @id @default(uuid())
-  email       String         @unique
-  firstName   String
-  lastName    String
+  id          String          @id @default(uuid())
+  email       String          @unique
+  firstName   String?
+  lastName    String?
   notice      String?
-  phoneNumber String
-  password    String
+  phoneNumber String?
+  password    String?
   photoUrl    String?
-  school      String
-  status      STUDENT_STATUS
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  school      String?
+  status      STUDENT_STATUS?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   photos      Photo[]
   jobLikes    JobLikes[]
 }
